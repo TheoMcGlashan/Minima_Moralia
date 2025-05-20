@@ -1,9 +1,0 @@
-C:\Users\Administrator\Documents\Minima_Moralia\Bevy_Code\target\debug\deps\libconcurrent_queue-6096b2c6bcaa8aef.rmeta: C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\concurrent-queue-2.5.0\src\lib.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\concurrent-queue-2.5.0\src\bounded.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\concurrent-queue-2.5.0\src\single.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\concurrent-queue-2.5.0\src\unbounded.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\concurrent-queue-2.5.0\src\sync.rs
-
-C:\Users\Administrator\Documents\Minima_Moralia\Bevy_Code\target\debug\deps\concurrent_queue-6096b2c6bcaa8aef.d: C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\concurrent-queue-2.5.0\src\lib.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\concurrent-queue-2.5.0\src\bounded.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\concurrent-queue-2.5.0\src\single.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\concurrent-queue-2.5.0\src\unbounded.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\concurrent-queue-2.5.0\src\sync.rs
-
-C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\concurrent-queue-2.5.0\src\lib.rs:
-C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\concurrent-queue-2.5.0\src\bounded.rs:
-C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\concurrent-queue-2.5.0\src\single.rs:
-C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\concurrent-queue-2.5.0\src\unbounded.rs:
-C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\concurrent-queue-2.5.0\src\sync.rs:

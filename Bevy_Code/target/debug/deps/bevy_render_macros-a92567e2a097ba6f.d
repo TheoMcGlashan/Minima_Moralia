@@ -1,8 +1,0 @@
-C:\Users\Administrator\Documents\Minima_Moralia\Bevy_Code\target\debug\deps\bevy_render_macros-a92567e2a097ba6f.dll: C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_render_macros-0.16.0\src\lib.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_render_macros-0.16.0\src\as_bind_group.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_render_macros-0.16.0\src\extract_component.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_render_macros-0.16.0\src\extract_resource.rs
-
-C:\Users\Administrator\Documents\Minima_Moralia\Bevy_Code\target\debug\deps\bevy_render_macros-a92567e2a097ba6f.d: C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_render_macros-0.16.0\src\lib.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_render_macros-0.16.0\src\as_bind_group.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_render_macros-0.16.0\src\extract_component.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_render_macros-0.16.0\src\extract_resource.rs
-
-C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_render_macros-0.16.0\src\lib.rs:
-C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_render_macros-0.16.0\src\as_bind_group.rs:
-C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_render_macros-0.16.0\src\extract_component.rs:
-C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\bevy_render_macros-0.16.0\src\extract_resource.rs:

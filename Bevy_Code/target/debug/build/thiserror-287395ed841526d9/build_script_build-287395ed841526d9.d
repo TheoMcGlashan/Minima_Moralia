@@ -1,5 +1,0 @@
-C:\Users\Administrator\Documents\Minima_Moralia\Bevy_Code\target\debug\build\thiserror-287395ed841526d9\build_script_build-287395ed841526d9.exe: C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\thiserror-1.0.69\build.rs
-
-C:\Users\Administrator\Documents\Minima_Moralia\Bevy_Code\target\debug\build\thiserror-287395ed841526d9\build_script_build-287395ed841526d9.d: C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\thiserror-1.0.69\build.rs
-
-C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\thiserror-1.0.69\build.rs:
