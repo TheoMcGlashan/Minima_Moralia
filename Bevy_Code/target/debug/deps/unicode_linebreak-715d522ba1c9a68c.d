@@ -1,0 +1,7 @@
+C:\Users\Administrator\Documents\Minima_Moralia\Bevy_Code\target\debug\deps\libunicode_linebreak-715d522ba1c9a68c.rmeta: C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unicode-linebreak-0.1.5\src\lib.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unicode-linebreak-0.1.5\src\shared.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unicode-linebreak-0.1.5\src\tables.rs
+
+C:\Users\Administrator\Documents\Minima_Moralia\Bevy_Code\target\debug\deps\unicode_linebreak-715d522ba1c9a68c.d: C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unicode-linebreak-0.1.5\src\lib.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unicode-linebreak-0.1.5\src\shared.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unicode-linebreak-0.1.5\src\tables.rs
+
+C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unicode-linebreak-0.1.5\src\lib.rs:
+C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unicode-linebreak-0.1.5\src\shared.rs:
+C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unicode-linebreak-0.1.5\src\tables.rs:

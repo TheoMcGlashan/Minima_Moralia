@@ -1,0 +1,5 @@
+C:\Users\Administrator\Documents\Minima_Moralia\Bevy_Code\target\debug\deps\libwindows_x86_64_gnu-e3f8e7102688141a.rmeta: C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\windows_x86_64_gnu-0.53.0\src\lib.rs
+
+C:\Users\Administrator\Documents\Minima_Moralia\Bevy_Code\target\debug\deps\windows_x86_64_gnu-e3f8e7102688141a.d: C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\windows_x86_64_gnu-0.53.0\src\lib.rs
+
+C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\windows_x86_64_gnu-0.53.0\src\lib.rs:

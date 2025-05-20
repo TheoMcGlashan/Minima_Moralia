@@ -1,0 +1,9 @@
+C:\Users\Administrator\Documents\Minima_Moralia\Bevy_Code\target\debug\deps\libhexasphere-36f112e4647aa9fd.rmeta: C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\hexasphere-15.1.0\src\lib.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\hexasphere-15.1.0\src\interpolation.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\hexasphere-15.1.0\src\math.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\hexasphere-15.1.0\src\shapes.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\hexasphere-15.1.0\src\slice.rs
+
+C:\Users\Administrator\Documents\Minima_Moralia\Bevy_Code\target\debug\deps\hexasphere-36f112e4647aa9fd.d: C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\hexasphere-15.1.0\src\lib.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\hexasphere-15.1.0\src\interpolation.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\hexasphere-15.1.0\src\math.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\hexasphere-15.1.0\src\shapes.rs C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\hexasphere-15.1.0\src\slice.rs
+
+C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\hexasphere-15.1.0\src\lib.rs:
+C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\hexasphere-15.1.0\src\interpolation.rs:
+C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\hexasphere-15.1.0\src\math.rs:
+C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\hexasphere-15.1.0\src\shapes.rs:
+C:\Users\Administrator\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\hexasphere-15.1.0\src\slice.rs:
