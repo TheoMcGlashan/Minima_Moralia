@@ -3,9 +3,6 @@ name = "main"
 version = "0.1.0"
 edition = "2024"
 
-[dependencies]
-bevy = "0.16.0"
-
 # Enable a small amount of optimization in the dev profile.
 [profile.dev]
 opt-level = 1
@@ -32,3 +29,7 @@ inherits = "release"
 opt-level = "s"
 # Strip all debugging information from the binary to slightly reduce file size.
 strip = "debuginfo"
+
+[dependencies]
+bevy = "0.16.0"
+rand = "0.9.1"
