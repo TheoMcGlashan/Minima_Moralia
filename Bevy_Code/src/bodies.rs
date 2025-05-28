@@ -22,8 +22,7 @@ impl Plugin for BodiesPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(ClearColor(Color::BLACK))
         .add_systems(Startup, generate_bodies)
-        .add_systems(FixedUpdate, (interact_bodies, integrate))
-        .add_systems(Update, look_at_star);
+        .add_systems(FixedUpdate, (interact_bodies, integrate));
     }
 }
 
@@ -122,11 +121,11 @@ fn generate_bodies(
 }
 
 /// A system to make each body respond to the gravity of the other bodies.
-fn interact_bodies(mut query: Query<(&Mass, &GlobalTransform, &mut Acceleration)>) {
+fn interact_bodies(mut query: Query<(&Mass, &GlobalTransform, &mut Acceleration, Option<&Star>)>) {
     // Iterate over all pairs of bodies.
     let mut iter = query.iter_combinations_mut();
 
-    while let Some([(Mass(m1), transform1, mut acc1), (Mass(m2), transform2, mut acc2)]) = 
+    while let Some([(Mass(m1), transform1, mut acc1, star1), (Mass(m2), transform2, mut acc2, star2)]) = 
         iter.fetch_next()
     {
         // Vector between the two bodies.
@@ -140,6 +139,13 @@ fn interact_bodies(mut query: Query<(&Mass, &GlobalTransform, &mut Acceleration)
         // Update the acceleration of each body based on the force exerted by the other.
         acc1.0 += force_unit_mass * *m2;
         acc2.0 -= force_unit_mass * *m1;
+
+        // If either body is the star, reset it's acceleration to prevent it from moving.
+        if let Some(_) = star1 {
+            acc1.0 = Vec3::ZERO;
+        } else if let Some(_) = star2 {
+            acc2.0 = Vec3::ZERO;
+        }
     }
 }
 
@@ -163,16 +169,4 @@ fn integrate(time: Res<Time>, mut query: Query<(&mut Acceleration, &mut Transfor
         // Set the new position of the body.
         transform.translation = new_pos;
     }
-}
-
-/// A system to make the camera look at the star.
-fn look_at_star(
-    mut camera: Single<&mut Transform, (With<Camera>, Without<Star>)>,
-    star: Single<&Transform, With<Star>>,
-) {
-    let new_rotation = camera
-        .looking_at(star.translation, Vec3::Y)
-        .rotation
-        .lerp(camera.rotation, 0.1);
-    camera.rotation = new_rotation;
 }
