@@ -3,8 +3,8 @@ use bevy::math::FloatPow;
 use rand::Rng;
 use bevy::color::palettes::css::ORANGE_RED;
 
-const GRAVITY_CONSTANT: f32 = 0.001;
-const NUM_BODIES: usize = 160;
+const GRAVITY_CONSTANT: f32 = 0.1;
+const NUM_BODIES: usize = 10;
 
 #[derive(Component, Default)]
 struct Mass(f32);
@@ -136,17 +136,25 @@ fn interact_bodies(mut query: Query<(&Mass, &GlobalTransform, &mut Acceleration,
         let f = GRAVITY_CONSTANT / distance_sq;
         let force_unit_mass = delta * f;
 
-        // Update the acceleration of each body based on the force exerted by the other.
-        acc1.0 += force_unit_mass * *m2;
-        acc2.0 -= force_unit_mass * *m1;
-
         // If either body is the star, reset it's acceleration to prevent it from moving.
+        // Also, the star attracts the other bodies.
         if let Some(_) = star1 {
             acc1.0 = Vec3::ZERO;
+            acc2.0 += force_unit_mass * *m1;
         } else if let Some(_) = star2 {
+            acc1.0 -= force_unit_mass * *m2;
             acc2.0 = Vec3::ZERO;
+        // Otherwise, apply the force to both bodies. Bodies repel each other.
+        } else {
+            acc1.0 -= force_unit_mass * *m2;
+            acc2.0 += force_unit_mass * *m1;
         }
     }
+}
+
+fn gravity(mut query: Query<(&Mass, &GlobalTransform, &mut Acceleration, Without<Star>)>
+) {
+
 }
 
 /// A system to perform Verlet integration on the bodies.

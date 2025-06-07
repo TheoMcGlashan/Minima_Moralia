@@ -181,12 +181,12 @@ fn pan_camera(
     if mouse_input.pressed(MouseButton::Left) {
         let delta = mouse_motion.delta;
 
-        let delta_up = delta.y;
-        let delta_right = delta.x;
+        // Calculate the movement vector based on the camera's local axes.
+        let movement_up = delta.y * *camera_transform.local_y();
+        let movement_right = -delta.x * *camera_transform.local_x();
+        let movement = movement_up + movement_right;
 
-        let movement_up = delta_up * *camera_transform.local_y();
-        let movement_right = delta_right * *-camera_transform.local_x();
-
-        camera_settings.target += (movement_up + movement_right) * camera_dev_settings.pan_speed * time.delta_secs();
+        // Scale movement vector by delta time and pan speed, then apply to the camera target.
+        camera_settings.target += movement * camera_dev_settings.pan_speed * time.delta_secs();
     }
 }
