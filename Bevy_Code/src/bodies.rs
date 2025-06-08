@@ -1,10 +1,12 @@
+use bevy::math::ops::exp;
 use bevy::prelude::*;
 use bevy::math::FloatPow;
 use rand::Rng;
-use bevy::color::palettes::css::ORANGE_RED;
 
-const GRAVITY_CONSTANT: f32 = 0.1;
-const NUM_BODIES: usize = 10;
+const GRAVITY: f32 = 10.;
+const BODY_REPULSION: f32 = 1.;
+const CENTRAL_REPULSION: f32 = 150.;
+const NUM_BODIES: usize = 1;
 
 #[derive(Component, Default)]
 struct Mass(f32);
@@ -13,8 +15,6 @@ struct Acceleration(Vec3);
 /// Last position used for Verlet integration.
 #[derive(Component, Default)]
 struct LastPos(Vec3);
-#[derive(Component, Default)]
-struct Star;
 
 pub struct BodiesPlugin;
 
@@ -22,7 +22,7 @@ impl Plugin for BodiesPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(ClearColor(Color::BLACK))
         .add_systems(Startup, generate_bodies)
-        .add_systems(FixedUpdate, (interact_bodies, integrate));
+        .add_systems(FixedUpdate, (interact_bodies, integrate, gravity, central_repulsion));
     }
 }
 
@@ -94,38 +94,19 @@ fn generate_bodies(
             },
         ));
     }
-
-    // Spawn a large star at the origin with a bright orange-red color.
-    let star_radius = 1.;
-    commands
-        .spawn((
-            BodyBundle {
-                mesh: Mesh3d(meshes.add(Sphere::new(1.0).mesh().ico(5).unwrap())),
-                material: MeshMaterial3d(materials.add(StandardMaterial {
-                    base_color: ORANGE_RED.into(),
-                    emissive: LinearRgba::from(ORANGE_RED) * 2.,
-                    ..default()
-                })),
-                mass: Mass(500.),
-                ..default()
-            },
-            Transform::from_scale(Vec3::splat(star_radius)),
-            Star,
-        ))
-        .with_child(PointLight {
-            color: Color::WHITE,
-            range: 100.,
-            radius: star_radius,
-            ..default()
-        });
+    // Spawn a light source at the center of the scene
+    commands.spawn(PointLight {
+        color: Color::WHITE,
+        ..default()
+    });
 }
 
 /// A system to make each body respond to the gravity of the other bodies.
-fn interact_bodies(mut query: Query<(&Mass, &GlobalTransform, &mut Acceleration, Option<&Star>)>) {
+fn interact_bodies(mut query: Query<(&Mass, &GlobalTransform, &mut Acceleration)>) {
     // Iterate over all pairs of bodies.
     let mut iter = query.iter_combinations_mut();
 
-    while let Some([(Mass(m1), transform1, mut acc1, star1), (Mass(m2), transform2, mut acc2, star2)]) = 
+    while let Some([(Mass(m1), transform1, mut acc1), (Mass(m2), transform2, mut acc2)]) = 
         iter.fetch_next()
     {
         // Vector between the two bodies.
@@ -133,28 +114,38 @@ fn interact_bodies(mut query: Query<(&Mass, &GlobalTransform, &mut Acceleration,
         let distance_sq: f32 = delta.length_squared();
 
         // Force between planets is inversely proportional to the square of the distance.
-        let f = GRAVITY_CONSTANT / distance_sq;
-        let force_unit_mass = delta * f;
+        let f = BODY_REPULSION / distance_sq;
+        let force_unit_mass: Vec3 = delta * f;
 
-        // If either body is the star, reset it's acceleration to prevent it from moving.
-        // Also, the star attracts the other bodies.
-        if let Some(_) = star1 {
-            acc1.0 = Vec3::ZERO;
-            acc2.0 += force_unit_mass * *m1;
-        } else if let Some(_) = star2 {
-            acc1.0 -= force_unit_mass * *m2;
-            acc2.0 = Vec3::ZERO;
-        // Otherwise, apply the force to both bodies. Bodies repel each other.
-        } else {
-            acc1.0 -= force_unit_mass * *m2;
-            acc2.0 += force_unit_mass * *m1;
-        }
+        // Apply the force to both bodies. Bodies repel each other.
+        acc1.0 -= force_unit_mass * *m2;
+        acc2.0 += force_unit_mass * *m1;
     }
 }
 
-fn gravity(mut query: Query<(&Mass, &GlobalTransform, &mut Acceleration, Without<Star>)>
+/// A system to apply gravity to bodies.
+fn gravity(mut query: Query<(&Mass, &GlobalTransform, &mut Acceleration)>
 ) {
+    for (mass, transform, mut acceleration) in &mut query {
+        let force = GRAVITY * mass.0;
 
+        // Apply the force to the acceleration vector.
+        acceleration.0 -= transform.translation().normalize() * force;
+    }
+}
+
+/// A system to repel bodies from the central point.
+fn central_repulsion(mut query: Query<(&Mass, &GlobalTransform, &mut Acceleration)>) {
+    for (mass, transform, mut acceleration) in &mut query {
+        let distance = transform.translation().length();
+        let dist_min = 1.;
+
+        let force = CENTRAL_REPULSION * exp(- (distance - dist_min).abs()) * mass.0;
+        
+        // Apply the force to the acceleration vector.
+        acceleration.0 += force * transform.translation().normalize();
+    }
+    
 }
 
 /// A system to perform Verlet integration on the bodies.
