@@ -3,10 +3,10 @@ use bevy::prelude::*;
 use bevy::math::FloatPow;
 use rand::Rng;
 
-const GRAVITY: f32 = 10.;
-const BODY_REPULSION: f32 = 1.;
+const GRAVITY: f32 = 5.;
+const BODY_REPULSION: f32 = 2.;
 const CENTRAL_REPULSION: f32 = 150.;
-const NUM_BODIES: usize = 1;
+const NUM_BODIES: usize = 100;
 
 #[derive(Component, Default)]
 struct Mass(f32);

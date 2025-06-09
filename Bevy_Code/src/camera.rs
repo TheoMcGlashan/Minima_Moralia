@@ -1,5 +1,5 @@
 use std::{f32::consts::FRAC_PI_2, ops::Range};
-use bevy::{input::mouse::{AccumulatedMouseMotion, MouseScrollUnit, MouseWheel}, prelude::*};
+use bevy::{input::mouse::{AccumulatedMouseMotion, MouseScrollUnit, MouseWheel}, math::ops::{cbrt, sqrt}, prelude::*};
 
 /// Camera settings for development purposes, will not change during runtime.
 #[derive(Debug, Resource)]
@@ -162,9 +162,10 @@ fn move_camera(
         movement -= *camera_transform.local_y(); // Move down.
     }
 
-    // Normalize movement and scale by delta time
+    // Normalize movement and scale by delta time and orbit distance.
     if movement != Vec3::ZERO {
-        movement = movement.normalize_or_zero() * time.delta_secs() * camera_dev_settings.move_speed;
+        movement = movement.normalize_or_zero() * time.delta_secs() * camera_dev_settings.move_speed 
+            * cbrt(camera_settings.orbit_distance);
         camera_settings.target += movement;
     }
 }
