@@ -1,11 +1,18 @@
+use std::f32::MIN;
+
 use bevy::prelude::*;
 use bevy::math::FloatPow;
 use rand::Rng;
 
-const GRAVITY: f32 = 5.;
-const REPULSION: f32 = 2.;
+const GRAVITY: f32 = 3.;
+const REPULSION: f32 = 25.;
 const NUM_BODIES: usize = 165;
+// Damping constant to slow down spheres and cause the system to come to a rest.
 const DAMPING: f32 = 0.005;
+// Force cutoff distance to speed up computation.
+const FORCE_CUTOFF: f32 = 15.0;
+// Minimum distance to apply repulsion force to avoid division by zero.
+const MIN_DISTANCE: f32 = 0.1;
 
 #[derive(Component, Default)]
 struct Mass(f32);
@@ -22,8 +29,13 @@ pub struct BodiesPlugin;
 impl Plugin for BodiesPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(ClearColor(Color::BLACK))
-        .add_systems(Startup, (generate_bodies, setup_ambient_light))
-        .add_systems(FixedUpdate, (sphere_repulsion, integrate, gravity));
+        .add_systems(Startup, generate_bodies)
+        .add_systems(FixedUpdate, (
+            clear_accelerations,
+            sphere_repulsion,
+            gravity,
+            integrate
+        ).chain());
     }
 }
 
@@ -36,12 +48,6 @@ struct BodyBundle {
     radius: Radius,
     acceleration: Acceleration,
     last_pos: LastPos,
-}
-
-/// A function to increase brightness of the scene.
-fn setup_ambient_light(mut ambient_light: ResMut<AmbientLight>) {
-    println!("Setting up ambient light for the scene.");
-    ambient_light.brightness = 500.0;
 }
 
 /// A function to generate a star and spherical bodies in random positions around the star.
@@ -61,7 +67,7 @@ fn generate_bodies(
     // Iterate over the number of bodies to spawn.
     for _ in 0..NUM_BODIES {
         // Generate a random radius and mass for the body.
-        let radius: f32 = rng.random_range(1.0..2.0);
+        let radius: f32 = rng.random_range(0.5..2.0);
         let mass_value = FloatPow::cubed(radius) * 0.1;
 
         // Generate a random position for the body within a sphere of radius 15, with 
@@ -72,7 +78,7 @@ fn generate_bodies(
             rng.random_range(-1.0..1.0),
         ).normalize()
             * ops::cbrt(rng.random_range(0.2f32..1.0))
-            *50.;
+            *30.;
 
         // Spawns a body with a random color and velocity, and a mass dependent on the radius.
         // Last position is set to a random position close to the current position.
@@ -104,6 +110,12 @@ fn generate_bodies(
     }
 }
 
+fn clear_accelerations(mut query: Query<&mut Acceleration>) {
+    for mut acceleration in &mut query {
+        acceleration.0 = Vec3::ZERO;
+    }
+}
+
 /// A system to make each body respond to the gravity of the other bodies.
 fn sphere_repulsion(mut query: Query<(&Mass, &Radius, &GlobalTransform, &mut Acceleration)>) {
     // Iterate over all pairs of bodies.
@@ -113,18 +125,23 @@ fn sphere_repulsion(mut query: Query<(&Mass, &Radius, &GlobalTransform, &mut Acc
         iter.fetch_next()
     {
         // Vector between bodies.
-        let delta = transform2.translation() - transform1.translation();
+        let force_direction = transform2.translation() - transform1.translation();
+
+        // Skip if bodies are far enough away to save computation time.
+        if force_direction.length() > FORCE_CUTOFF {
+            continue;
+        }
         // Scale our force by the size of the bodies, so larger bodies push more.
         let r_sum = r1 + r2;
-        let r_distance = delta.length() / r_sum;
+        let r_distance = force_direction.length() / r_sum;
 
         // Force between bodies is inversely proportional to their distance apart.
-        let magnitude = REPULSION / r_distance.squared();
-        let force: Vec3 = delta * magnitude;
+        let force_magnitude_1 = REPULSION * m2 / r_distance.squared();
+        let force_magnitude_2 = REPULSION * m1 / r_distance.squared();
 
         // Apply the force to both bodies. Bodies repel each other.
-        acc1.0 -= force * *m2;
-        acc2.0 += force * *m1;
+        acc1.0 -= force_magnitude_1 * force_direction.normalize();
+        acc2.0 += force_magnitude_2 * force_direction.normalize();
     }
 }
 
@@ -132,35 +149,36 @@ fn sphere_repulsion(mut query: Query<(&Mass, &Radius, &GlobalTransform, &mut Acc
 fn gravity(mut query: Query<(&Mass, &GlobalTransform, &mut Acceleration)>
 ) {
     for (mass, transform, mut acceleration) in &mut query {
+        let distance_from_center = transform.translation().length();
 
-        // Calculate the force of gravity based on the distance from the origin.
-        let force = GRAVITY * mass.0 + 
-            (transform.translation().length() / 10.).powf(2.0);
-
-        // If the force is too small, skip applying it to avoid numerical instability.
-        if force < 0.01 {
+        // Skip if too close to centner to avoid numerical issues
+        if distance_from_center < MIN_DISTANCE {
             continue;
         }
 
-        // Apply the force to the acceleration vector.
-        acceleration.0 -= transform.translation().normalize() * force;
+        // Gravity increases a bit as bodies get further from the center.
+        let force_magnitude = GRAVITY * mass.0 + (distance_from_center / 10.).squared();
+        let force_direction = -transform.translation().normalize();
+
+        acceleration.0 += force_direction * force_magnitude;
     }
 }
 
 /// A system to perform Verlet integration on the bodies.
-fn integrate(time: Res<Time>, mut query: Query<(&mut Acceleration, &mut Transform, &mut LastPos)>) {
-    let dt_sq = time.delta_secs() * time.delta_secs();
+fn integrate(
+    time: Res<Time>,
+    mut query: Query<(&mut Acceleration, &mut Transform, &mut LastPos)>
+) {
+    let dt = time.delta_secs();
+    let dt_sq = dt * dt;
 
     // Iterate over each body to update its position.
-    for (mut acc, mut transform, mut last_pos) in &mut query {
+    for (acc, mut transform, mut last_pos) in &mut query {
 
-        // Formula for Verlet integration. Uses two positions instead of velocity and position to calculate
-        // the next position of the body. Faster for GPUs to optimize than Euler integration.
-        // Damping factor causes energy loss in the system, leading to the spheres coming to rest eventually.
-        let new_pos = (2.0 - DAMPING) * transform.translation - (1.0 - DAMPING) * last_pos.0 + acc.0 * dt_sq;
+        let current_pos = transform.translation;
 
-        // Reset acceleration after applying it.
-        acc.0 = Vec3::ZERO;
+        // Verlet integration formula used to calculate the new position.
+        let new_pos = (2.0 - DAMPING) * current_pos - (1.0 - DAMPING) * last_pos.0 + acc.0 *dt_sq;
         
         // Update the last position to the current position.
         last_pos.0 = transform.translation;

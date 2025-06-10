@@ -26,7 +26,7 @@ impl Plugin for CameraPlugin {
     fn build(&self, app: &mut App) {
         app.insert_resource(CameraSettings::default())
             .insert_resource(CameraDevSettings::default())
-            .add_systems(Startup, setup_camera)
+            .add_systems(Startup, (setup_camera, setup_ambient_light))
             .add_systems(Update, (orbit, zoom, move_camera, pan_camera));
     }
 }
@@ -54,6 +54,12 @@ impl Default for CameraDevSettings {
             pan_speed: 0.5,
         }
     }
+}
+
+/// A function to increase brightness of the scene.
+fn setup_ambient_light(mut ambient_light: ResMut<AmbientLight>) {
+    println!("Setting up ambient light for the scene.");
+    ambient_light.brightness = 500.0;
 }
 
 /// A system to spawn a camera with default settings.
