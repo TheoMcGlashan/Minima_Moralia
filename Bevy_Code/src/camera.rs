@@ -1,5 +1,5 @@
 use std::{f32::consts::FRAC_PI_2, ops::Range};
-use bevy::{input::mouse::{AccumulatedMouseMotion, MouseScrollUnit, MouseWheel}, math::ops::{cbrt, sqrt}, prelude::*};
+use bevy::{input::mouse::{AccumulatedMouseMotion, MouseScrollUnit, MouseWheel}, math::ops::cbrt, prelude::*};
 
 /// Camera settings for development purposes, will not change during runtime.
 #[derive(Debug, Resource)]
